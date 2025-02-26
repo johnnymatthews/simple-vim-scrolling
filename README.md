@@ -8,6 +8,12 @@ A simple Firefox extension that adds vim-style keyboard navigation to any webpag
 - `k`: Scroll up
 - `gg`: Go to top of page
 - `G`: Go to bottom of page
+- `H`: Go back in browser history
+- `L`: Go forward in browser history
+- `/`: Enter link-hint mode - displays 2-character codes next to all visible links
+  - Type the corresponding 2-character code to navigate to that link
+  - Press `Esc` to exit link-hint mode
+  - If you're on a website that binds `/` to something (like GitHub.com), you can use `CTRL` + `/` instead.
 
 ## Features
 
