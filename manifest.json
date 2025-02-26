@@ -1,0 +1,17 @@
+{
+  "manifest_version": 2,
+  "name": "Simple Vim Scrolling",
+  "version": "1.0",
+  "description": "Navigate pages using vim-style keyboard shortcuts (j/k for scrolling, gg/G for top/bottom)",
+  "icons": {
+    "48": "icons/icon-48.png",
+    "96": "icons/icon-96.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["page-navigator.js"]
+    }
+  ],
+  "permissions": []
+}
