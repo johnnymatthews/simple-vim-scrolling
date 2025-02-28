@@ -187,7 +187,7 @@ function createLinkHint(link, hintCode, index) {
     color: #000000;
     border: 1px solid #000000;
     padding: 2px 4px;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: bold;
     z-index: 10000;
     border-radius: 4px;
