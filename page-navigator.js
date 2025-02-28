@@ -6,7 +6,7 @@
  * - k: Scroll up
  * - gg: Go to top of page
  * - G: Go to bottom of page
- * - /: Enter link-hint mode, display 2-letter codes for links
+ * - f: Enter link-hint mode, display 2-letter codes for links
  *     (type the code to navigate to that link)
  * - H: Go back in browsing history
  * - L: Go forward in browsing history

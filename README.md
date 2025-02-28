@@ -1,6 +1,12 @@
-# Simple Vim Scrolling
+<p align="center">
+  <img width="250" height="250" src="https://github.com/user-attachments/assets/f694b4cd-0498-4da7-9eca-ae5740ab8193" alt="Alt text for your image">
+</p>
+
+<h1 align="center">Simple Vim Scrolling</h1>
 
 A simple Firefox extension that adds vim-style keyboard navigation to any webpage. Pretty much stripped out all the extra stuff from the _excellent_  [Vimium FF](https://addons.mozilla.org/en-CA/firefox/addon/vimium-ff/) by [Phil Crosby](https://addons.mozilla.org/en-CA/firefox/user/14971172/) and [Stephen Blott](https://addons.mozilla.org/en-CA/firefox/user/12979436/).
+
+![Screenshot From 2025-02-28 15-05-09](https://github.com/user-attachments/assets/1dcb7f68-55cf-4d1e-93da-87afde84ed7f)
 
 ## Controls
 
