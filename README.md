@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="250" height="250" src="https://github.com/user-attachments/assets/f694b4cd-0498-4da7-9eca-ae5740ab8193" alt="Alt text for your image">
+  <img width="250" height="250" src="https://github.com/user-attachments/assets/5278e4c5-c8d3-4d3b-ab05-e3bc7947bbb3" alt="Alt text for your image">
 </p>
 
 <h1 align="center">Simple Vim Scrolling</h1>
