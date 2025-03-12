@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "VimNav",
+  "name": "Simple Vim Scrolling",
   "version": "1.0",
   "description": "Navigate pages using vim-style keyboard shortcuts",
   "icons": {

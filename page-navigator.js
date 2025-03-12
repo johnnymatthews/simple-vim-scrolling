@@ -1,5 +1,5 @@
 /**
- * VimNav - Vim-Style Navigation for Chrome.
+ * Simple Vim Scrolling - Vim-Style Navigation for Chrome.
  * 
  * Navigation controls:
  * - j: Scroll down
