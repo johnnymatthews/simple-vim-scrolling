@@ -46,19 +46,12 @@ A lightweight Chrome extension that adds vim-style keyboard navigation to any we
 ## Directory Structure
 
 ```
-vimnav/
+├── README.md               # Docs.
+├── icons/                  # Pretty pictures to display in the extension store.
+├── manifest.json           # Metadata.
+├── package-extension.sh    # Package builder for deploying to extension store.
+└── page-navigator.js       # Main functionality.
 
-│
-├── manifest.json        # Extension metadata
-├── page-navigator.js    # Main functionality
-
-├── README.md            # Documentation
-└── icons/               # Extension icons
-    ├── icon-16.png
-
-    ├── icon-32.png
-    ├── icon-48.png
-    └── icon-128.png
 ```
 
 ## Customization
