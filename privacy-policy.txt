@@ -1,0 +1,49 @@
+# Simple Vim Scrolling Privacy Policy
+
+This file exists purely for the purposes of uploading the extension to the Chrome Extension store.
+
+## Introduction
+
+This Privacy Policy explains how Simple Vim Scrolling ("we", "our", or "the extension") handles user data. Simple Vim Scrolling is a browser extension designed to provide Vim-style keyboard navigation for web browsing.
+
+## Information Collection and Use
+
+**Simple Vim Scrolling does not collect, store, transmit, or share any user data.**
+
+The extension operates entirely within your browser and functions by:
+- Adding keyboard shortcuts for page navigation
+- Enabling link selection via keyboard commands
+- Providing browser history navigation shortcuts
+
+All functionality is executed locally within your browser. The extension:
+- Does not track browsing history
+- Does not store or transmit any personal information
+- Does not use cookies or local storage
+- Does not connect to external servers
+- Does not collect analytics or usage statistics
+
+## Permissions
+
+Simple Vim Scrolling requires the following permissions:
+
+1. **Access to all websites (`<all_urls>`)**: This permission is necessary for the extension to provide navigation functionality across all websites you visit. The extension only uses this permission to:
+   - Detect keyboard inputs
+   - Scroll the page
+   - Highlight and interact with links
+   - Navigate browser history
+
+## Third-Party Services
+
+Simple Vim Scrolling does not use any third-party services, APIs, or libraries that would collect user data.
+
+## Changes to This Privacy Policy
+
+We may update our Privacy Policy from time to time. We will notify users of any changes by updating the "Last Updated" date of this privacy policy.
+
+## Contact Us
+
+If you have any questions about this Privacy Policy, please leave an issue at https://github.com/johnnymatthews/simple-vim-scrolling/issues
+
+## Last Updated
+
+March 2025
