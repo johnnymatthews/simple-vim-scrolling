@@ -4,9 +4,7 @@
 
 <h1 align="center">Simple Vim Scrolling</h1>
 
-A simple Firefox extension that adds vim-style keyboard navigation to any webpage. Pretty much stripped out all the extra stuff from the _excellent_  [Vimium FF](https://addons.mozilla.org/en-CA/firefox/addon/vimium-ff/) by [Phil Crosby](https://addons.mozilla.org/en-CA/firefox/user/14971172/) and [Stephen Blott](https://addons.mozilla.org/en-CA/firefox/user/12979436/).
-
-![Screenshot From 2025-02-28 15-05-09](https://github.com/user-attachments/assets/1dcb7f68-55cf-4d1e-93da-87afde84ed7f)
+A lightweight Chrome extension that adds vim-style keyboard navigation to any webpage.
 
 ## Controls
 
@@ -19,35 +17,58 @@ A simple Firefox extension that adds vim-style keyboard navigation to any webpag
 - `f`: Enter link-hint mode - displays 2-character codes next to all visible links
   - Type the corresponding 2-character code to navigate to that link
   - Press `Esc` to exit link-hint mode
-  - If you're on a website that binds `f` to something you can use `CTRL` + `f` instead.
 
 ## Features
 
-- Smooth scrolling for comfortable navigation.
-- Keyboard shortcuts don't interfere with text input in forms.
-- Works on all websites.
-- Incredibly small and focused feature-set.
+- Smooth scrolling for comfortable navigation
 
-## Temporary installation (for development)
+- Keyboard shortcuts don't interfere with text input in forms
+- Link-hint navigation without using the mouse
+- Works on all websites
+- No tracking or analytics
 
-1. Open Firefox and navigate to `about:debugging`.
-2. Click **This Firefox** in the sidebar.
-3. Click **Load Temporary Add-on...**.
-4. Navigate to the extension directory and select the `manifest.json` file.
+## Installation
+
+### From Chrome Web Store (Recommended)
+
+1. Go to the Chrome Web Store page for VimNav (Link TBD)
+2. Click "Add to Chrome"
+3. Confirm the installation
+
+### Developer Mode Installation
+
+1. Download or clone this repository
+2. Open Chrome and navigate to `chrome://extensions/`
+3. Enable "Developer mode" (toggle in the top right)
+4. Click "Load unpacked"
+5. Select the extension directory containing these files
 
 ## Directory Structure
 
 ```
-vim-style-navigation/
+vimnav/
+
 │
 ├── manifest.json        # Extension metadata
 ├── page-navigator.js    # Main functionality
+
 ├── README.md            # Documentation
 └── icons/               # Extension icons
+    ├── icon-16.png
+
+    ├── icon-32.png
     ├── icon-48.png
-    └── icon-96.png
+    └── icon-128.png
 ```
 
 ## Customization
 
-You can modify the `SCROLL_AMOUNT` constant in `page-navigator.js` to change how far each keypress scrolls the page.
+You can modify the following constants in `page-navigator.js` to customize the scrolling behavior:
+
+- `SCROLL_AMOUNT`: The distance to scroll with each keypress (in pixels)
+- `SCROLL_SPEED`: The interval between scroll steps when holding down a key (in milliseconds, lower = faster)
+
+Examples:
+
+- For faster scrolling when holding keys, decrease `SCROLL_SPEED` (default: 10ms)
+- For larger scroll steps, increase `SCROLL_AMOUNT` (default: 60px)
