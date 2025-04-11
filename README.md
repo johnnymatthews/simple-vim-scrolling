@@ -21,9 +21,11 @@ A lightweight Chrome extension that adds vim-style keyboard navigation to any we
 ## Features
 
 - Smooth scrolling for comfortable navigation
-
 - Keyboard shortcuts don't interfere with text input in forms
 - Link-hint navigation without using the mouse
+- Highlights not just links but also buttons and form inputs
+- Color-coded hints (yellow for links, orange for buttons, green for inputs)
+- Interactive filtering of hints as you type
 - Works on all websites
 - No tracking or analytics
 
@@ -46,12 +48,16 @@ A lightweight Chrome extension that adds vim-style keyboard navigation to any we
 ## Directory Structure
 
 ```
-├── README.md               # Docs.
-├── icons/                  # Pretty pictures to display in the extension store.
-├── manifest.json           # Metadata.
-├── package-extension.sh    # Package builder for deploying to extension store.
-└── page-navigator.js       # Main functionality.
-
+vimnav/
+│
+├── manifest.json        # Extension metadata
+├── page-navigator.js    # Main functionality
+├── README.md            # Documentation
+└── icons/               # Extension icons
+    ├── icon-16.png
+    ├── icon-32.png
+    ├── icon-48.png
+    └── icon-128.png
 ```
 
 ## Customization
@@ -62,6 +68,9 @@ You can modify the following constants in `page-navigator.js` to customize the s
 - `SCROLL_SPEED`: The interval between scroll steps when holding down a key (in milliseconds, lower = faster)
 
 Examples:
-
 - For faster scrolling when holding keys, decrease `SCROLL_SPEED` (default: 10ms)
 - For larger scroll steps, increase `SCROLL_AMOUNT` (default: 60px)
+
+## License
+
+MIT
