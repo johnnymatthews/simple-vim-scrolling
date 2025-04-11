@@ -13,19 +13,55 @@
  */
 
 // Scroll amount for each j/k press (in pixels)
-const SCROLL_AMOUNT = 200;
+const SCROLL_AMOUNT = 60;
 
 // To track multi-key sequences (for "gg")
 let keySequence = '';
 let keySequenceTimer = null;
 const KEY_SEQUENCE_TIMEOUT = 1000; // 1 second timeout for key sequence
 
+// Continuous scrolling support
+let isScrolling = false;
+let scrollDirection = 0;
+let scrollInterval = null;
+const SCROLL_SPEED = 10; // Lower is faster (milliseconds between scroll steps)
+
 // Link hint mode variables
 let isLinkHintMode = false;
 let linkHints = [];
 let currentHintCode = '';
-const EXCLUDED_CHARS = ['j', 'k', 'g', '/']; // Characters we don't use for hints
-const HINT_CHARS = 'abcdefhilmnopqrstuvwxyz12345678'; // Characters we do use
+const EXCLUDED_CHARS = ['j', 'k', 'g', 'f']; // Characters we don't use for hints
+const HINT_CHARS = 'abcdehilmnopqrstuvwxyz12345678'; // Characters we do use
+
+// Function to start continuous scrolling
+function startContinuousScroll(direction) {
+  // Clear any existing interval
+  if (scrollInterval) {
+    clearInterval(scrollInterval);
+  }
+  
+  // Set scrolling state
+  isScrolling = true;
+  scrollDirection = direction;
+  
+  // Start interval for continuous scrolling
+  scrollInterval = setInterval(() => {
+    window.scrollBy({
+      top: SCROLL_AMOUNT * direction,
+      behavior: 'auto' // Use 'auto' for continuous scrolling to be more responsive
+    });
+  }, SCROLL_SPEED);
+}
+
+// Function to stop continuous scrolling
+function stopContinuousScroll() {
+  if (scrollInterval) {
+    clearInterval(scrollInterval);
+    scrollInterval = null;
+  }
+  isScrolling = false;
+  scrollDirection = 0;
+}
 
 // Main event listener for keyboard input
 document.addEventListener('keydown', (event) => {
@@ -58,23 +94,33 @@ document.addEventListener('keydown', (event) => {
       // Scroll down
       window.scrollBy({
         top: SCROLL_AMOUNT,
-        behavior: 'smooth'
+        behavior: 'auto' // Changed to 'auto' for faster initial response
       });
+      
+      // Start continuous scrolling if key is held down
+      if (!isScrolling || scrollDirection !== 1) {
+        startContinuousScroll(1); // 1 for down
+      }
       break;
       
     case 'k':
       // Scroll up
       window.scrollBy({
         top: -SCROLL_AMOUNT,
-        behavior: 'smooth'
+        behavior: 'auto' // Changed to 'auto' for faster initial response
       });
+      
+      // Start continuous scrolling if key is held down
+      if (!isScrolling || scrollDirection !== -1) {
+        startContinuousScroll(-1); // -1 for up
+      }
       break;
       
     case 'G':
       // Go to bottom of page
       window.scrollTo({
         top: document.body.scrollHeight,
-        behavior: 'smooth'
+        behavior: 'auto'
       });
       break;
       
@@ -115,37 +161,75 @@ function enterLinkHintMode() {
 }
 
 /**
- * Display link hints for all links on the page
+ * Display link hints for all clickable elements on the page
  */
 function showLinkHints() {
   // Clear any existing hints
   clearLinkHints();
   
-  // Find all links on the page
+  // Find all clickable elements on the page
   const links = document.querySelectorAll('a');
+  const buttons = document.querySelectorAll('button, input[type="button"], input[type="submit"], [role="button"]');
+  const inputs = document.querySelectorAll('input:not([type="button"]):not([type="submit"]), textarea, select');
   
-  // Generate hint codes for each link
-  const hintCodes = generateHintCodes(links.length);
+  // Count visible elements to generate enough codes
+  const visibleElements = [];
   
-  // Create hint elements for each link
-  links.forEach((link, index) => {
-    if (isLinkVisible(link)) {
-      const hintCode = hintCodes[index];
-      createLinkHint(link, hintCode, index);
+  // Collect visible links
+  links.forEach(link => {
+    if (isElementVisible(link)) {
+      visibleElements.push({
+        element: link,
+        type: 'link'
+      });
     }
+  });
+  
+  // Collect visible buttons
+  buttons.forEach(button => {
+    if (isElementVisible(button)) {
+      visibleElements.push({
+        element: button,
+        type: 'button'
+      });
+    }
+  });
+  
+  // Collect visible inputs
+  inputs.forEach(input => {
+    if (isElementVisible(input)) {
+      visibleElements.push({
+        element: input,
+        type: 'input'
+      });
+    }
+  });
+  
+  // Generate hint codes for all visible elements
+  const hintCodes = generateHintCodes(visibleElements.length);
+  
+  // Create hint elements for each clickable element
+  visibleElements.forEach((item, index) => {
+    const hintCode = hintCodes[index];
+    createLinkHint(item.element, hintCode, index, item.type);
   });
 }
 
 /**
- * Check if a link is visible in the viewport
+ * Check if an element is visible in the viewport
  */
-function isLinkVisible(element) {
+function isElementVisible(element) {
   const rect = element.getBoundingClientRect();
   return (
+    rect.width > 0 &&
+    rect.height > 0 &&
     rect.top >= 0 &&
     rect.left >= 0 &&
     rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+    rect.right <= (window.innerWidth || document.documentElement.clientWidth) &&
+    getComputedStyle(element).display !== 'none' &&
+    getComputedStyle(element).visibility !== 'hidden' &&
+    element.offsetParent !== null
   );
 }
 
@@ -172,22 +256,31 @@ function generateHintCodes(count) {
 /**
  * Create and position a link hint element
  */
-function createLinkHint(link, hintCode, index) {
-  const rect = link.getBoundingClientRect();
+function createLinkHint(element, hintCode, index, type) {
+  const rect = element.getBoundingClientRect();
   
   // Create hint element
   const hintElement = document.createElement('div');
   hintElement.textContent = hintCode;
   hintElement.className = 'vim-nav-link-hint';
+  
+  // Style based on element type
+  let bgColor = '#ffff00'; // Default yellow for links
+  if (type === 'button') {
+    bgColor = '#ffa500'; // Orange for buttons
+  } else if (type === 'input') {
+    bgColor = '#90ee90'; // Light green for input elements
+  }
+  
   hintElement.style.cssText = `
     position: fixed;
     top: ${rect.top - 10}px;
     left: ${rect.left - 10}px;
-    background-color: #ffff00;
+    background-color: ${bgColor};
     color: #000000;
     border: 1px solid #000000;
     padding: 2px 4px;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: bold;
     z-index: 10000;
     border-radius: 4px;
@@ -199,8 +292,9 @@ function createLinkHint(link, hintCode, index) {
   // Add to link hints array to keep track
   linkHints.push({
     element: hintElement,
-    link: link,
-    code: hintCode
+    target: element,
+    code: hintCode,
+    type: type
   });
 }
 
@@ -215,14 +309,39 @@ function handleLinkHintModeKeypress(event) {
   }
   
   // Add character to current hint code
-  currentHintCode += event.key.toLowerCase();
+  const key = event.key.toLowerCase();
+  
+  // If this is the first character, filter to only show matching hints
+  if (currentHintCode === '') {
+    // Check if any hints start with this character
+    const matchingHints = linkHints.filter(hint => 
+      hint.code.startsWith(key)
+    );
+    
+    // If no matches, exit hint mode
+    if (matchingHints.length === 0) {
+      exitLinkHintMode();
+      return;
+    }
+    
+    // Hide all hints that don't match
+    linkHints.forEach(hint => {
+      if (!hint.code.startsWith(key)) {
+        hint.element.style.display = 'none';
+      } else {
+        hint.element.style.backgroundColor = '#88ff88'; // Highlight matching hints
+      }
+    });
+  }
+  
+  currentHintCode += key;
   
   // Check if the current input matches any hint
   const matchedHint = linkHints.find(hint => hint.code === currentHintCode);
   
-  // If we have an exact match, navigate to the link
+  // If we have an exact match, activate the element
   if (matchedHint) {
-    matchedHint.link.click();
+    activateElement(matchedHint.target, matchedHint.type);
     exitLinkHintMode();
     event.preventDefault();
     return;
@@ -236,6 +355,29 @@ function handleLinkHintModeKeypress(event) {
   // If no potential matches, exit hint mode
   if (potentialMatches.length === 0) {
     exitLinkHintMode();
+  } else {
+    // Update highlighting of potential matches
+    linkHints.forEach(hint => {
+      if (hint.code.startsWith(currentHintCode)) {
+        hint.element.style.backgroundColor = '#88ff88'; // Brighter green for better matches
+      } else if (hint.element.style.display !== 'none') {
+        hint.element.style.backgroundColor = '#ffff88'; // Dimmer yellow for less relevant
+      }
+    });
+  }
+  
+  event.preventDefault();
+}
+
+/**
+ * Activate the targeted element based on its type
+ */
+function activateElement(element, type) {
+  if (type === 'input') {
+    element.focus();
+  } else {
+    // For links and buttons, simulate a click
+    element.click();
   }
 }
 
